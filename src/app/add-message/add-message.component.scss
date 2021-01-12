@@ -1,0 +1,31 @@
+.addMessageForm{
+    display: flex;
+    justify-items: center;
+    flex-direction: column;
+    &_text{
+        // flex-basis: 65%;
+        // flex-grow: 1;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    &_btn{
+        // flex-basis: 25%;
+        // flex-grow: 0;
+        padding: 10px;
+        border-radius: 5px;
+        width: fit-content;
+        margin: 0 auto;
+        border: none;
+        box-shadow: 0 3px 8px rgba(0,0,0,.8);
+        &:active{
+            box-shadow: none;
+            outline: none;
+            border: 1px solid darkgray;
+            color: gray;
+        }
+        &:focus{
+            outline: none;
+        }
+    }
+}

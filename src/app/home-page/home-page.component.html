@@ -1,0 +1,4 @@
+<div class="msgs">
+    <app-add-message></app-add-message>
+    <app-message *ngFor="let message of messages | sortMessages" [message]="message"></app-message>
+</div>

@@ -1,0 +1,40 @@
+.message{
+    margin-top: 20px;
+    &-p{
+        border: 1px dotted gray;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        
+    }
+    &-text{
+        flex-basis: 90%;
+        word-break: break-word;
+    }
+    &-like{
+        border: none;
+        border-radius: 50%;
+        padding: 5px 5px 2px 5px;
+        width: 24px;
+        height: 24px;
+        margin-left: 20px;
+
+        &:active{
+            border: none;
+            outline: none;
+            background-color: darkgray;
+        }
+        &:focus{
+            outline: none;
+        }
+        &__icon{
+            font-size: 14px;
+            height: 14px;
+            width: 14px;
+        }
+        &__selected{
+            color: red;
+        }
+    }
+}

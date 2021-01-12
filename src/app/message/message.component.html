@@ -1,0 +1,14 @@
+<div class="message">
+<div class="message-p">
+    <p class="message-text">{{message.text}}</p>
+    
+    <button mat-icon-button 
+        class="example-icon favorite-icon message-like" 
+        aria-label="Example icon-button with heart icon"
+        mat-raised-button [matBadge]="message.likes" [matBadgeHidden]="message.likes <= 0" matBadgeSize="small"
+        (click)="like()">
+        <mat-icon class="message-like__icon" [class.message-like__selected]="liked">favorite</mat-icon>
+      </button>
+    </div>
+
+</div>

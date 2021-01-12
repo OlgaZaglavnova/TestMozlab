@@ -1,0 +1,4 @@
+<form class="addMessageForm" [formGroup]="form" (ngSubmit)="addMessage()">
+    <textarea class="addMessageForm_text" type="text" formControlName="text" placeholder="Введите вопрос"></textarea>
+    <button class="addMessageForm_btn" type="submit" [disabled]="form.invalid">Отправить</button>
+</form>
