@@ -2,7 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Msg } from '../shared/interfaces';
 import { MessagesService } from '../shared/messages.service';
 
-
+/**
+ * Компонент вывода отдельного вопроса из списка
+ * One message of list component
+ */
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
@@ -25,7 +28,7 @@ export class MessageComponent implements OnInit {
     } else {
       tmpLike++;
     }
-    this.messagesService.setLike(this.message.id, tmpLike);
+    this.messagesService.setLike(this.message, tmpLike);
     this.liked = !this.liked;
   }
 
