@@ -13,6 +13,8 @@ import { MessageComponent } from './message/message.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { HomePageComponent } from './home-page/home-page.component';
 import { SortPipe } from './shared/sort.pipe';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -36,7 +38,8 @@ const INTERCEPTOR_PROVIDER: Provider = {
     MatIconModule,
     MatBadgeModule,
     HttpClientModule,
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [INTERCEPTOR_PROVIDER],
   bootstrap: [AppComponent]
