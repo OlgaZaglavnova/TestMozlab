@@ -1,63 +1,69 @@
-import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Injectable, OnDestroy } from "@angular/core";
+import { Observable, Subscription } from "rxjs";
+import { map } from "rxjs/operators";
 
-import { Msg } from "./interfaces";
+import { environment } from "src/environments/environment";
+import { AddResponse, Msg } from "./interfaces";
 
 @Injectable({providedIn: 'root'})
-export class MessagesService{
-    messages: Msg[] = [{
-        text: 'Question 1',
-        id: 1,
-        likes: 5
-    },
-    {
-        text: 'Question 2',
-        id: 2,
-        likes: 120
-    },
-    {
-        text: 'Question 3',
-        id: 3,
-        likes: 10
-    },
-    {
-        text: 'Question 4',
-        id: 4,
-        likes: 120
-    },
-    {
-        text: 'Question 5',
-        id: 5,
-        likes: 10
-    }];
+export class MessagesService implements OnDestroy{
 
-    constructor(){}
+    messages: Msg[] = [];
+    mSub: Subscription;
+    uSub: Subscription;
 
-    addMsg(msg: Msg){
-        // return this.http.post(`${environment.dbUrl}/messages.json`, msg)
-        //     .pipe(map((response: AddResponse) => {
-        //         return {
-        //             ...msg,
-        //             id: response.name
-        //         }
-        //     }))
-        msg.id = this.messages.length + 1;
-        this.messages.push(msg);
+    constructor(private http: HttpClient){}
+
+    addMsg(msg: Msg):Observable<Msg>{
+        return this.http.post(`${environment.dbUrl}/messages.json`, msg)
+            .pipe(map((response: AddResponse) => {
+                let addedMsg: Msg =  {
+                    ...msg,
+                    id: response.name
+                };
+                // console.log('MessagesService addMsg', addedMsg);
+                this.messages.push(addedMsg);
+                return addedMsg;
+            }))
+        // msg.id = this.messages.length + 1;
+        // this.messages.push(msg);
     }
 
     getAll() {
-        return this.messages;
+        return this.http.get(`${environment.dbUrl}/messages.json`)
+        .pipe(
+            map((response: {[key: string]: any}) => {
+                return  Object.keys(response)
+                    .map(key => ({
+                        ...response[key],
+                        id: key
+                    }));
+            })
+        );
     }
 
-    setLike(id: number, likes: number){
-        this.messages.find(elem => {
-            return elem.id === id
-        }).likes = likes;
-        this.sortLikes();
+    updateDbLike(message: Msg):Observable<Msg>{
+        return this.http.patch<Msg>(`${environment.dbUrl}/messages/${message.id}.json`, message)
+    }
+
+    setLike(msg: Msg, likes: number){
+        let tmpMsg: Msg={
+            ...msg,
+            likes
+        }
+        this.uSub = this.updateDbLike(tmpMsg).subscribe(()=> {
+            this.messages.find(elem => {
+                return elem.id === msg.id
+            }).likes = likes;
+            this.sortLikes(this.messages);
+        });
+        
 
     }
 
-    sortLikes(){
-        this.messages = this.messages.sort((a, b) => {
+    sortLikes(msgs: Msg[]): Msg[]{
+         return msgs.sort((a, b) => {
             if (a.likes  > b.likes){
                 return -1;
             }
@@ -67,4 +73,23 @@ export class MessagesService{
             return 0
         })
     }
+
+    ngOnDestroy(): void {
+        if(this.uSub){
+            this.uSub.unsubscribe();
+          }
+        if(this.mSub){
+          this.mSub.unsubscribe();
+        }
+      }
+
+    //Обновление данных из БД
+      refresh(){
+        this.mSub = this.getAll().subscribe(
+          messages => {
+            this.messages = messages;
+            this.sortLikes(this.messages);
+          }
+        );
+      }
 }

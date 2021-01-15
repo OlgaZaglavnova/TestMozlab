@@ -1,5 +1,5 @@
 export interface Msg{
-    id?: number,
+    id?: string,
     text: string,
     likes: number
 }

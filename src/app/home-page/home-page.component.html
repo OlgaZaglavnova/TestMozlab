@@ -1,4 +1,12 @@
+
 <div class="msgs">
     <app-add-message></app-add-message>
-    <app-message *ngFor="let message of messages | sortMessages" [message]="message"></app-message>
+    <div *ngIf="messagesService.messages.length; else noMessages">
+        <app-message *ngFor="let message of messagesService.messages " [message]="message"></app-message>
+    </div>
+    <ng-template #noMessages>
+        <p class="loading">
+            Нет вопросов или идет загрузка...
+        </p>
+    </ng-template>
 </div>
