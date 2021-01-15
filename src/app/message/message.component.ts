@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Msg } from '../shared/interfaces';
 import { MessagesService } from '../shared/messages.service';
 
@@ -14,6 +14,7 @@ import { MessagesService } from '../shared/messages.service';
 export class MessageComponent implements OnInit {
 
   @Input() message: Msg;
+  @Output() likeEmitter: EventEmitter<number> = new EventEmitter<number>();
   liked = false;
 
   constructor(private messagesService:MessagesService) { }
@@ -28,6 +29,8 @@ export class MessageComponent implements OnInit {
     } else {
       tmpLike++;
     }
+    this.likeEmitter.emit(tmpLike);
+
     this.messagesService.setLike(this.message, tmpLike);
     this.liked = !this.liked;
   }

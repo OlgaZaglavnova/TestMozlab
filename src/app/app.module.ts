@@ -7,8 +7,6 @@ import { RouterModule } from '@angular/router' ;
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 import { AppComponent } from './app.component';
 import { AddMessageComponent } from './add-message/add-message.component';
 import { MessageComponent } from './message/message.component';
@@ -37,7 +35,6 @@ const INTERCEPTOR_PROVIDER: Provider = {
     BrowserAnimationsModule,
     MatIconModule,
     MatBadgeModule,
-    MatProgressSpinnerModule,
     HttpClientModule,
     RouterModule.forRoot([])
   ],

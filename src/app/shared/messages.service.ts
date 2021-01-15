@@ -22,7 +22,7 @@ export class MessagesService implements OnDestroy{
                     ...msg,
                     id: response.name
                 };
-                console.log('MessagesService addMsg', addedMsg);
+                // console.log('MessagesService addMsg', addedMsg);
                 this.messages.push(addedMsg);
                 return addedMsg;
             }))
@@ -43,16 +43,7 @@ export class MessagesService implements OnDestroy{
         );
     }
 
-    // setLike(id: string, likes: number){
-    //     this.messages.find(elem => {
-    //         return elem.id === id
-    //     }).likes = likes;
-    //     this.sortLikes();
-
-    // }
-
     updateDbLike(message: Msg):Observable<Msg>{
-        
         return this.http.patch<Msg>(`${environment.dbUrl}/messages/${message.id}.json`, message)
     }
 

@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { HomePageComponent } from '../home-page/home-page.component';
 
 import { Msg } from '../shared/interfaces';
 import { MessagesService } from '../shared/messages.service';
@@ -19,6 +18,8 @@ export class AddMessageComponent implements OnInit, OnDestroy {
   aSub: Subscription;
 
   form: FormGroup;
+
+  @Output() addMsgEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private messagesService:MessagesService) { }
 
@@ -38,17 +39,19 @@ export class AddMessageComponent implements OnInit, OnDestroy {
     if (this.form.invalid){
       return;
     }
-
     const msg: Msg = {
       text: this.form.value.text,
       likes: 0
     };
+    this.addMsgEmitter.emit(this.form.value.text);
 
     this.aSub = this.messagesService.addMsg(msg).subscribe(
       () => {
         this.form.reset();
       }
     );
+
+
     
   }
 
